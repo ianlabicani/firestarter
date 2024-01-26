@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { SharedModule } from '../shared.module';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [],
+  imports: [SharedModule],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss'
 })
