@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "firestarter-9ab6b": {
+      "hosting": {
+        "firestarter": [
+          "firestarter-9ab6b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "firestarter-9ab6b"
+  }
+}
