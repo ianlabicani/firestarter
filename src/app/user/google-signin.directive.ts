@@ -7,7 +7,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   standalone: true,
 })
 export class GoogleSigninDirective {
-  afAuth = inject(AngularFireAuth);
+  private afAuth = inject(AngularFireAuth);
 
   @HostListener('click') onClick() {
     this.afAuth.signInWithPopup(new GoogleAuthProvider());
