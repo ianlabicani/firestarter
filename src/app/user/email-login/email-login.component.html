@@ -1,0 +1,49 @@
+<button *ngIf="isLogin" (click)="changeType('signup')">New user?</button>
+<button *ngIf="isSignup || isReset" (click)="changeType('login')">
+  {{ isReset ? "back to login" : "have an account?" }}
+</button>
+<button *ngIf="isLogin" (click)="changeType('reset')">reset</button>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="text" [formControl]="email" id="email" />
+    <br />
+    <span *ngIf="email.getError('required') && (email.dirty || email.touched)"
+      >email is required</span
+    >
+    <span *ngIf="email.getError('email') && !email.errors"
+      >Not a valid email</span
+    >
+  </div>
+  <div *ngIf="isLogin || isSignup" class="form-group">
+    <label for="password">Password:</label>
+    <input type="text" [formControl]="password" id="password" />
+    <br />
+    <span
+      *ngIf="
+        password.getError('required') && (password.dirty || password.touched)
+      "
+      >password is required</span
+    >
+    <span *ngIf="password.getError('minlength') && password.errors"
+      >minimum password length is 6</span
+    >
+  </div>
+  <div *ngIf="isSignup" class="form-group">
+    <label for="ponfirm-password">Confirm Password:</label>
+    <input type="text" [formControl]="confirmPassword" id="confirm-password" />
+    <br />
+    <span
+      *ngIf="
+        confirmPassword.getError('required') &&
+        (confirmPassword.dirty || confirmPassword.touched)
+      "
+      >Confirm Password is required</span
+    >
+    <span *ngIf="!isPasswordMatch && !confirmPassword.errors"
+      >Password dont match</span
+    >
+  </div>
+  <button type="submit" [disabled]="form.invalid">{{ submitText }}</button>
+</form>

@@ -7,6 +7,8 @@
       Login with Google
     </button>
   </div>
+  <h3>OR</h3>
+  <app-email-login></app-email-login>
 
   <div *ngIf="afAuth.authState | async as user" class="logout">
     <p>
