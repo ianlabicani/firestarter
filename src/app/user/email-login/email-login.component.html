@@ -12,7 +12,7 @@
     <span *ngIf="email.getError('required') && (email.dirty || email.touched)"
       >email is required</span
     >
-    <span *ngIf="email.getError('email') && !email.errors"
+    <span *ngIf="email.getError('email') && !email.getError('required')"
       >Not a valid email</span
     >
   </div>
@@ -45,5 +45,26 @@
       >Password dont match</span
     >
   </div>
-  <button type="submit" [disabled]="form.invalid">{{ submitText }}</button>
+  @if (isLogin) {
+  <button type="submit" [disabled]="email.invalid || password.invalid">
+    {{ submitText }}
+  </button>
+  } @else if(isSignup) {
+
+  <button
+    type="submit"
+    [disabled]="email.invalid || password.invalid || !isPasswordMatch"
+  >
+    {{ submitText }}
+  </button>
+  } @else if (isReset) {
+
+  <button type="submit" [disabled]="email.invalid">
+    {{ submitText }}
+  </button>
+  }
+  <p>{{ serverMessage }}</p>
 </form>
+@if (loading) {
+<h1>Loading...</h1>
+}
