@@ -71,13 +71,18 @@ export class EmailLoginComponent {
       const password = this.password.value ?? '';
       if (this.isLogin) {
         await this.afAuth.signInWithEmailAndPassword(email, password);
+        this.serverMessage = null;
+        this.form.reset();
       }
       if (this.isSignup) {
         await this.afAuth.createUserWithEmailAndPassword(email, password);
+        this.serverMessage = null;
+        this.form.reset();
       }
       if (this.isReset) {
         await this.afAuth.sendPasswordResetEmail(email);
         this.serverMessage = 'check your email';
+        this.form.reset();
       }
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
