@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { FirebaseError } from '@angular/fire/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   FormBuilder,
@@ -35,8 +36,9 @@ export class EmailLoginComponent {
   });
 
   formType: FormType = 'login';
-
   submitText = 'login';
+  loading: boolean = false;
+  serverMessage: FirebaseError | null | string = null;
 
   get isLogin() {
     return this.formType === 'login';
@@ -62,7 +64,26 @@ export class EmailLoginComponent {
     this.form.reset();
   }
 
-  onSubmit(): void {
-    console.log(this.form.value);
+  async onSubmit() {
+    this.loading = true;
+    try {
+      const email = this.email.value ?? '';
+      const password = this.password.value ?? '';
+      if (this.isLogin) {
+        await this.afAuth.signInWithEmailAndPassword(email, password);
+      }
+      if (this.isSignup) {
+        await this.afAuth.createUserWithEmailAndPassword(email, password);
+      }
+      if (this.isReset) {
+        await this.afAuth.sendPasswordResetEmail(email);
+        this.serverMessage = 'check your email';
+      }
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        this.serverMessage = error.code;
+      }
+    }
+    this.loading = false;
   }
 }
