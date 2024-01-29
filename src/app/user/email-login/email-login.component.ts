@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   FormBuilder,
   FormControl,
@@ -18,6 +19,7 @@ type FormType = 'login' | 'signup' | 'reset';
 })
 export class EmailLoginComponent {
   fb = inject(FormBuilder);
+  afAuth = inject(AngularFireAuth);
   // FormControls
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [
