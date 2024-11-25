@@ -31,7 +31,10 @@
     <mat-error>Password is <strong>required</strong></mat-error>
     }
   </mat-form-field>
+  <!-- error message -->
+  @if (errorMessage()) {
+  <small class="error-msg">{{ errorMessage() }}</small>
+  }
   <!-- submit button -->
-
   <button mat-raised-button type="submit">Login</button>
 </form>

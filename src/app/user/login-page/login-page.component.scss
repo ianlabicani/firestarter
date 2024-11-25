@@ -4,6 +4,7 @@ form {
   padding: 15px;
   margin: auto;
   border: 1px solid #ccc;
+  margin-top: 2rem;
 
   h1 {
     text-align: center;
@@ -17,6 +18,13 @@ form {
   mat-form-field {
     margin-top: 15px;
     width: 100%;
+  }
+
+  .error-msg {
+    color: red;
+    margin: 10px 0;
+    text-align: center;
+    display: block;
   }
 
   button {

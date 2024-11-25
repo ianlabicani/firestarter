@@ -1,15 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
   FormControl,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { FirebaseError } from '@angular/fire/app';
 
 @Component({
   selector: 'app-login-page',
@@ -25,6 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class LoginPageComponent {
   private fb = inject(FormBuilder);
+  auth = inject(Auth);
+  private router = inject(Router);
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -32,12 +36,29 @@ export class LoginPageComponent {
   ]);
   passwordFormControl = new FormControl('', [Validators.required]);
   loginForm = this.fb.nonNullable.group({
-    emial: this.emailFormControl,
+    email: this.emailFormControl,
     password: this.passwordFormControl,
   });
+  errorMessage = signal<string | null>(null);
 
-  onSubmit() {
-    // TODO: login user with firebase
-    console.log(this.loginForm.getRawValue());
+  async onSubmit() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const { email, password } = this.loginForm.getRawValue();
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        this.auth,
+        email!,
+        password!
+      );
+      if (userCredential.user) {
+        this.router.navigate(['/']);
+      }
+    } catch (error) {
+      this.errorMessage.set((error as FirebaseError).code);
+    }
   }
 }
