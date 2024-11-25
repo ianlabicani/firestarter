@@ -1,0 +1,26 @@
+form {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  border: 1px solid #ccc;
+
+  h1 {
+    text-align: center;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  mat-form-field {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+  }
+}
