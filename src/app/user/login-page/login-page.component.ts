@@ -3,7 +3,6 @@ import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormsModule,
   FormControl,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
