@@ -1,0 +1,53 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <h1>Create Account</h1>
+  <div class="btn-container">
+    <a mat-raised-button routerLink="/login">Returning user?</a>
+  </div>
+  <!-- email control -->
+  <mat-form-field class="example-full-width">
+    <mat-label>Email</mat-label>
+    <input
+      type="email"
+      matInput
+      [formControl]="emailFormControl"
+      placeholder="Ex. pat@example.com"
+    />
+    @if (emailFormControl.hasError('email')) {
+    <mat-error>Please enter a valid email address</mat-error>
+    } @if (emailFormControl.hasError('required')) {
+    <mat-error>Email is <strong>required</strong></mat-error>
+    }
+  </mat-form-field>
+  <!-- password control -->
+  <mat-form-field class="example-full-width">
+    <mat-label>Password</mat-label>
+    <input
+      type="password"
+      matInput
+      [formControl]="passwordFormControl"
+      placeholder="********"
+    />
+    @if (passwordFormControl.hasError('required')) {
+    <mat-error>Password is <strong>required</strong></mat-error>
+    }
+  </mat-form-field>
+  <!-- confirm password control -->
+  <mat-form-field class="example-full-width">
+    <mat-label>Confirm Password</mat-label>
+    <input
+      type="password"
+      matInput
+      [formControl]="confirmPasswordFormControl"
+      placeholder="********"
+    />
+    @if (confirmPasswordFormControl.hasError('required')) {
+    <mat-error>Password is <strong>required</strong></mat-error>
+    } @if (confirmPasswordFormControl.hasError('match')) {
+    <mat-error>Passwords must match</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- submit button -->
+
+  <button mat-raised-button type="submit">Login</button>
+</form>
