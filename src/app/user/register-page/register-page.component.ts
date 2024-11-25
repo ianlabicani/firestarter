@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -8,11 +8,13 @@ import {
   AbstractControl,
   ValidatorFn,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { FirebaseError } from '@angular/fire/app';
 
 @Component({
   selector: 'app-register-page',
@@ -28,6 +30,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class RegisterPageComponent {
   private fb = inject(FormBuilder);
+  auth = inject(Auth);
+  router = inject(Router);
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -37,7 +41,7 @@ export class RegisterPageComponent {
   confirmPasswordFormControl = new FormControl('', [Validators.required]);
   registerForm = this.fb.nonNullable.group(
     {
-      emial: this.emailFormControl,
+      email: this.emailFormControl,
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl,
     },
@@ -45,10 +49,27 @@ export class RegisterPageComponent {
       validators: this.matchValidator('password', 'confirmPassword'),
     }
   );
+  errorMessage = signal<string | null>(null);
 
-  onSubmit() {
-    // TODO: register and login user with firebase
-    console.log(this.registerForm.getRawValue());
+  async onSubmit() {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
+
+    const { email, password } = this.registerForm.getRawValue();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email!,
+        password!
+      );
+      if (userCredential.user) {
+        this.router.navigate(['/']);
+      }
+    } catch (error) {
+      this.errorMessage.set((error as FirebaseError).code);
+    }
   }
 
   matchValidator(

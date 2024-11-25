@@ -46,8 +46,10 @@
     <mat-error>Passwords must match</mat-error>
     }
   </mat-form-field>
-
+  <!-- error message -->
+  @if (errorMessage()) {
+  <small class="error-msg">{{ errorMessage() }}</small>
+  }
   <!-- submit button -->
-
   <button mat-raised-button type="submit">Register</button>
 </form>
