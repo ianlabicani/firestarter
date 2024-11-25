@@ -32,7 +32,7 @@ export class LoginPageComponent {
     Validators.email,
   ]);
   passwordFormControl = new FormControl('', [Validators.required]);
-  loginForm = this.fb.group({
+  loginForm = this.fb.nonNullable.group({
     emial: this.emailFormControl,
     password: this.passwordFormControl,
   });
